@@ -125,10 +125,12 @@ const Employees = () => {
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold">Employee Directory</h1>
-          <Button className="flex items-center gap-2 bg-hrms-blue hover:bg-hrms-blue-dark">
-            <UserPlus size={16} />
-            <span>Add Employee</span>
-          </Button>
+          <Link to="/add-employee">
+            <Button className="flex items-center gap-2 bg-hrms-blue hover:bg-hrms-blue-dark">
+              <UserPlus size={16} />
+              <span>Add Employee</span>
+            </Button>
+          </Link>
         </div>
 
         <div className="flex items-center gap-4">

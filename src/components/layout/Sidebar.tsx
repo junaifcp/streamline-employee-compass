@@ -7,7 +7,7 @@ import {
   FileText, 
   DollarSign, 
   Briefcase, 
-  Star, 
+  User, 
   File, 
   Home, 
   Menu,
@@ -27,7 +27,7 @@ export const Sidebar = () => {
     { icon: FileText, label: "Leave", path: "/leave" },
     { icon: DollarSign, label: "Payroll", path: "/payroll" },
     { icon: Briefcase, label: "Recruitment", path: "/recruitment" },
-    { icon: Star, label: "Performance", path: "/performance" },
+    { icon: User, label: "Performance", path: "/performance" },
     { icon: File, label: "Documents", path: "/documents" },
   ];
 
@@ -71,10 +71,27 @@ export const Sidebar = () => {
               </Button>
             </Link>
           ))}
+          
+          {/* Employee Portal Link */}
+          <Link to="/employee-portal">
+            <Button
+              variant="outline"
+              className={cn(
+                "w-full flex justify-start gap-3 mb-1 font-medium mt-4",
+                location.pathname === "/employee-portal"
+                  ? "bg-hrms-blue-light/10 text-hrms-blue hover:bg-hrms-blue-light/20 border-hrms-blue"
+                  : "hover:bg-gray-100"
+              )}
+            >
+              <User size={20} />
+              {!collapsed && <span>Employee Portal</span>}
+            </Button>
+          </Link>
         </nav>
       </div>
       <div className="p-4 border-t border-gray-200">
         <Button variant="outline" className="w-full flex items-center gap-2">
+          <X size={16} />
           {!collapsed && <span>Log out</span>}
         </Button>
       </div>
