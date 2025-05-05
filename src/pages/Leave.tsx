@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import {
@@ -326,7 +325,7 @@ const Leave = () => {
               <CardContent>
                 <div className="bg-white p-4 rounded-lg">
                   <Calendar
-                    mode="default"
+                    mode="single"
                     selected={date}
                     onSelect={(date) => date && setDate(date)}
                     className={cn("p-3 pointer-events-auto")}

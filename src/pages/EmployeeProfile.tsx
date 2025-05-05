@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
@@ -13,7 +12,8 @@ import {
   User,
   Edit,
   File,
-  AlertCircle
+  AlertCircle,
+  Plus
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
