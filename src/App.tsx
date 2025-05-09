@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // Pages
 import Login from "./pages/Login";
@@ -18,8 +18,13 @@ import Recruitment from "./pages/Recruitment";
 import Performance from "./pages/Performance";
 import Documents from "./pages/Documents";
 import AddEmployee from "./pages/AddEmployee";
-import EmployeePortal from "./pages/EmployeePortal";
 import NotFound from "./pages/NotFound";
+
+// Employee Portal Pages
+import EmployeeLogin from "./pages/EmployeeLogin";
+import EmployeePortal from "./pages/EmployeePortal";
+import EmployeeLayout from "./components/layout/EmployeeLayout";
+import EmployeePortalLanding from "./pages/EmployeePortalLanding";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +35,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          {/* Admin/HR Routes */}
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -43,7 +49,35 @@ const App = () => (
           <Route path="/recruitment" element={<Recruitment />} />
           <Route path="/performance" element={<Performance />} />
           <Route path="/documents" element={<Documents />} />
-          <Route path="/employee-portal" element={<EmployeePortal />} />
+          
+          {/* Employee Portal Routes */}
+          <Route path="/employee/login" element={<EmployeeLogin />} />
+          <Route path="/employee/portal" element={<EmployeePortalLanding />} />
+          <Route path="/employee/attendance" element={
+            <EmployeeLayout>
+              <EmployeePortal defaultTab="attendance" />
+            </EmployeeLayout>
+          } />
+          <Route path="/employee/leave" element={
+            <EmployeeLayout>
+              <EmployeePortal defaultTab="leave" />
+            </EmployeeLayout>
+          } />
+          <Route path="/employee/profile" element={
+            <EmployeeLayout>
+              <EmployeePortal defaultTab="profile" />
+            </EmployeeLayout>
+          } />
+          <Route path="/employee/documents" element={
+            <EmployeeLayout>
+              <EmployeePortal defaultTab="documents" />
+            </EmployeeLayout>
+          } />
+          
+          {/* Redirect old employee-portal URL to new one */}
+          <Route path="/employee-portal" element={<Navigate to="/employee/portal" replace />} />
+          
+          {/* 404 Page */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
