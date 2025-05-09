@@ -22,9 +22,12 @@ import NotFound from "./pages/NotFound";
 
 // Employee Portal Pages
 import EmployeeLogin from "./pages/EmployeeLogin";
-import EmployeePortal from "./pages/EmployeePortal";
 import EmployeeLayout from "./components/layout/EmployeeLayout";
 import EmployeePortalLanding from "./pages/EmployeePortalLanding";
+import EmployeePortal from "./pages/EmployeePortal";
+import EmployeeProfilePage from "./pages/EmployeeProfilePage";
+import EmployeeLeavePage from "./pages/EmployeeLeavePage";
+import EmployeeDocumentsPage from "./pages/EmployeeDocumentsPage";
 
 const queryClient = new QueryClient();
 
@@ -64,17 +67,17 @@ const App = () => (
           } />
           <Route path="/employee/leave" element={
             <EmployeeLayout>
-              <EmployeePortal defaultTab="leave" />
+              <EmployeeLeavePage />
             </EmployeeLayout>
           } />
           <Route path="/employee/profile" element={
             <EmployeeLayout>
-              <EmployeePortal defaultTab="profile" />
+              <EmployeeProfilePage />
             </EmployeeLayout>
           } />
           <Route path="/employee/documents" element={
             <EmployeeLayout>
-              <EmployeePortal defaultTab="documents" />
+              <EmployeeDocumentsPage />
             </EmployeeLayout>
           } />
           
