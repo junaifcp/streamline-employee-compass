@@ -73,12 +73,12 @@ export const Sidebar = () => {
           ))}
           
           {/* Employee Portal Link */}
-          <Link to="/employee-portal">
+          <Link to="/employee/portal">
             <Button
               variant="outline"
               className={cn(
                 "w-full flex justify-start gap-3 mb-1 font-medium mt-4",
-                location.pathname === "/employee-portal"
+                location.pathname.startsWith("/employee")
                   ? "bg-hrms-blue-light/10 text-hrms-blue hover:bg-hrms-blue-light/20 border-hrms-blue"
                   : "hover:bg-gray-100"
               )}

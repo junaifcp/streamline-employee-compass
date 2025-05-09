@@ -52,7 +52,11 @@ const App = () => (
           
           {/* Employee Portal Routes */}
           <Route path="/employee/login" element={<EmployeeLogin />} />
-          <Route path="/employee/portal" element={<EmployeePortalLanding />} />
+          <Route path="/employee/portal" element={
+            <EmployeeLayout>
+              <EmployeePortalLanding />
+            </EmployeeLayout>
+          } />
           <Route path="/employee/attendance" element={
             <EmployeeLayout>
               <EmployeePortal defaultTab="attendance" />

@@ -42,7 +42,7 @@ export const EmployeeLayout = ({ children }: EmployeeLayoutProps) => {
     <div className="min-h-screen bg-gray-50">
       <header className="bg-blue-600 text-white shadow">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <h1 className="text-xl font-bold">Employee Portal</h1>
+          <Link to="/employee/portal" className="text-xl font-bold">Employee Portal</Link>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <img 
