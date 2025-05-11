@@ -23,8 +23,10 @@ import {
   Calendar,
   FileText
 } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import JobPostModal from "@/components/recruitment/JobPostModal";
+import AddCandidateModal from "@/components/recruitment/AddCandidateModal";
 
 // Types for our data
 type Job = {
@@ -55,6 +57,10 @@ const Recruitment = () => {
   const [selectedTab, setSelectedTab] = useState<string>("jobs");
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
   const [selectedStage, setSelectedStage] = useState<string>("all");
+  
+  // Modal states
+  const [isJobPostModalOpen, setIsJobPostModalOpen] = useState(false);
+  const [isAddCandidateModalOpen, setIsAddCandidateModalOpen] = useState(false);
   
   // Mock data for jobs
   const jobs: Job[] = [
@@ -236,7 +242,10 @@ const Recruitment = () => {
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold">Recruitment Pipeline</h1>
-          <Button className="flex items-center gap-2 bg-hrms-blue hover:bg-hrms-blue-dark">
+          <Button 
+            className="flex items-center gap-2 bg-hrms-blue hover:bg-hrms-blue-dark"
+            onClick={() => setIsJobPostModalOpen(true)}
+          >
             <Plus size={16} />
             <span>Post New Job</span>
           </Button>
@@ -358,7 +367,11 @@ const Recruitment = () => {
                     </SelectContent>
                   </Select>
                   
-                  <Button variant="outline" size="sm">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => setIsAddCandidateModalOpen(true)}
+                  >
                     <Plus size={16} className="mr-2" />
                     Add Candidate
                   </Button>
@@ -435,6 +448,21 @@ const Recruitment = () => {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Modals */}
+      <JobPostModal 
+        open={isJobPostModalOpen} 
+        onOpenChange={setIsJobPostModalOpen} 
+      />
+      
+      {selectedJob && (
+        <AddCandidateModal 
+          open={isAddCandidateModalOpen} 
+          onOpenChange={setIsAddCandidateModalOpen}
+          jobId={selectedJob.id}
+          jobTitle={selectedJob.title}
+        />
+      )}
     </MainLayout>
   );
 };

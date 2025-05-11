@@ -1,11 +1,14 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Calendar, Clock } from "lucide-react";
+import LeaveRequestModal from "@/components/leave/LeaveRequestModal";
 
 const EmployeeLeavePage = () => {
+  const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
+
   // Mock leave data - in a real application, this would come from an API or context
   const leaveBalance = [
     { type: "Annual Leave", total: 20, used: 8, remaining: 12 },
@@ -37,7 +40,10 @@ const EmployeeLeavePage = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Leave Management</h1>
-        <Button className="flex items-center gap-2">
+        <Button 
+          className="flex items-center gap-2"
+          onClick={() => setIsLeaveModalOpen(true)}
+        >
           <Plus size={16} />
           <span>Apply for Leave</span>
         </Button>
@@ -106,6 +112,11 @@ const EmployeeLeavePage = () => {
           </div>
         </CardContent>
       </Card>
+
+      <LeaveRequestModal 
+        open={isLeaveModalOpen} 
+        onOpenChange={setIsLeaveModalOpen} 
+      />
     </div>
   );
 };
