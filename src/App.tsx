@@ -4,6 +4,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 // Pages
 import Login from "./pages/Login";
@@ -29,64 +31,125 @@ import EmployeeProfilePage from "./pages/EmployeeProfilePage";
 import EmployeeLeavePage from "./pages/EmployeeLeavePage";
 import EmployeeDocumentsPage from "./pages/EmployeeDocumentsPage";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
       <BrowserRouter>
-        <Routes>
-          {/* Admin/HR Routes */}
-          <Route path="/" element={<Login />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/employees" element={<Employees />} />
-          <Route path="/employees/:id" element={<EmployeeProfile />} />
-          <Route path="/add-employee" element={<AddEmployee />} />
-          <Route path="/attendance" element={<Attendance />} />
-          <Route path="/leave" element={<Leave />} />
-          <Route path="/payroll" element={<Payroll />} />
-          <Route path="/recruitment" element={<Recruitment />} />
-          <Route path="/performance" element={<Performance />} />
-          <Route path="/documents" element={<Documents />} />
-          
-          {/* Employee Portal Routes */}
-          <Route path="/employee/login" element={<EmployeeLogin />} />
-          <Route path="/employee/portal" element={
-            <EmployeeLayout>
-              <EmployeePortalLanding />
-            </EmployeeLayout>
-          } />
-          <Route path="/employee/attendance" element={
-            <EmployeeLayout>
-              <EmployeePortal defaultTab="attendance" />
-            </EmployeeLayout>
-          } />
-          <Route path="/employee/leave" element={
-            <EmployeeLayout>
-              <EmployeeLeavePage />
-            </EmployeeLayout>
-          } />
-          <Route path="/employee/profile" element={
-            <EmployeeLayout>
-              <EmployeeProfilePage />
-            </EmployeeLayout>
-          } />
-          <Route path="/employee/documents" element={
-            <EmployeeLayout>
-              <EmployeeDocumentsPage />
-            </EmployeeLayout>
-          } />
-          
-          {/* Redirect old employee-portal URL to new one */}
-          <Route path="/employee-portal" element={<Navigate to="/employee/portal" replace />} />
-          
-          {/* 404 Page */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AuthProvider>
+          <Toaster />
+          <Sonner />
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<Login />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/employee/login" element={<EmployeeLogin />} />
+            
+            {/* Admin/HR Protected Routes */}
+            <Route path="/dashboard" element={
+              <ProtectedRoute allowedRoles={['admin', 'hr']}>
+                <Dashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/employees" element={
+              <ProtectedRoute allowedRoles={['admin', 'hr']}>
+                <Employees />
+              </ProtectedRoute>
+            } />
+            <Route path="/employees/:id" element={
+              <ProtectedRoute allowedRoles={['admin', 'hr']}>
+                <EmployeeProfile />
+              </ProtectedRoute>
+            } />
+            <Route path="/add-employee" element={
+              <ProtectedRoute allowedRoles={['admin', 'hr']}>
+                <AddEmployee />
+              </ProtectedRoute>
+            } />
+            <Route path="/attendance" element={
+              <ProtectedRoute allowedRoles={['admin', 'hr']}>
+                <Attendance />
+              </ProtectedRoute>
+            } />
+            <Route path="/leave" element={
+              <ProtectedRoute allowedRoles={['admin', 'hr']}>
+                <Leave />
+              </ProtectedRoute>
+            } />
+            <Route path="/payroll" element={
+              <ProtectedRoute allowedRoles={['admin', 'hr']}>
+                <Payroll />
+              </ProtectedRoute>
+            } />
+            <Route path="/recruitment" element={
+              <ProtectedRoute allowedRoles={['admin', 'hr']}>
+                <Recruitment />
+              </ProtectedRoute>
+            } />
+            <Route path="/performance" element={
+              <ProtectedRoute allowedRoles={['admin', 'hr']}>
+                <Performance />
+              </ProtectedRoute>
+            } />
+            <Route path="/documents" element={
+              <ProtectedRoute allowedRoles={['admin', 'hr']}>
+                <Documents />
+              </ProtectedRoute>
+            } />
+            
+            {/* Employee Portal Protected Routes */}
+            <Route path="/employee/portal" element={
+              <ProtectedRoute employeeOnly={true}>
+                <EmployeeLayout>
+                  <EmployeePortalLanding />
+                </EmployeeLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/employee/attendance" element={
+              <ProtectedRoute employeeOnly={true}>
+                <EmployeeLayout>
+                  <EmployeePortal defaultTab="attendance" />
+                </EmployeeLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/employee/leave" element={
+              <ProtectedRoute employeeOnly={true}>
+                <EmployeeLayout>
+                  <EmployeeLeavePage />
+                </EmployeeLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/employee/profile" element={
+              <ProtectedRoute employeeOnly={true}>
+                <EmployeeLayout>
+                  <EmployeeProfilePage />
+                </EmployeeLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/employee/documents" element={
+              <ProtectedRoute employeeOnly={true}>
+                <EmployeeLayout>
+                  <EmployeeDocumentsPage />
+                </EmployeeLayout>
+              </ProtectedRoute>
+            } />
+            
+            {/* Redirect old employee-portal URL to new one */}
+            <Route path="/employee-portal" element={<Navigate to="/employee/portal" replace />} />
+            
+            {/* 404 Page */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

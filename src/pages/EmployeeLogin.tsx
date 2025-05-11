@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,7 +14,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useToast } from "@/components/ui/use-toast";
+import { useAuth } from "@/context/AuthContext";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
@@ -24,8 +24,7 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 const EmployeeLogin = () => {
-  const { toast } = useToast();
-  const navigate = useNavigate();
+  const { login, isLoading } = useAuth();
   
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -36,23 +35,8 @@ const EmployeeLogin = () => {
   });
 
   const onSubmit = async (data: FormData) => {
-    // This would be replaced with actual API call to validate employee credentials
-    console.log("Employee login attempt:", data);
-    
-    // Mock employee login for demo purposes
-    if (data.email.includes("employee")) {
-      toast({
-        title: "Login successful",
-        description: "Welcome to the employee portal",
-      });
-      navigate("/employee/portal");
-    } else {
-      toast({
-        title: "Login failed",
-        description: "Invalid employee credentials",
-        variant: "destructive",
-      });
-    }
+    // Pass true as the third parameter to indicate this is an employee login
+    await login(data.email, data.password, true);
   };
 
   return (
@@ -107,8 +91,22 @@ const EmployeeLogin = () => {
                 )}
               />
 
-              <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700">
-                Sign In
+              <Button 
+                type="submit" 
+                className="w-full bg-blue-600 hover:bg-blue-700"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <span className="flex items-center">
+                    <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Signing In...
+                  </span>
+                ) : (
+                  "Sign In"
+                )}
               </Button>
             </form>
           </Form>
