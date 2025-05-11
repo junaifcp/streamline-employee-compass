@@ -7,6 +7,9 @@ import attendanceService from './attendanceService';
 import documentService from './documentService';
 import recruitmentService from './recruitmentService';
 import performanceService from './performanceService';
+import payrollService from './payrollService';
+import dashboardService from './dashboardService';
+import departmentService from './departmentService';
 
 export {
   axiosInstance,
@@ -22,4 +25,7 @@ export {
   documentService,
   recruitmentService,
   performanceService,
+  payrollService,
+  dashboardService,
+  departmentService,
 };

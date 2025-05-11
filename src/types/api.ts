@@ -159,3 +159,65 @@ export interface PerformanceReview {
   }[];
   notes?: string;
 }
+
+export interface Department {
+  _id: string;
+  name: string;
+  description?: string;
+  managerId?: string;
+  employeeCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Position {
+  _id: string;
+  title: string;
+  departmentId: string;
+  description?: string;
+  minSalary?: number;
+  maxSalary?: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PayrollRecord {
+  _id: string;
+  employeeId: string;
+  month: number;
+  year: number;
+  basicSalary: number;
+  allowances: {
+    type: string;
+    amount: number;
+  }[];
+  deductions: {
+    type: string;
+    amount: number;
+  }[];
+  netSalary: number;
+  paymentStatus: 'pending' | 'paid' | 'cancelled';
+  paymentDate?: string;
+  generatedBy: string;
+  generatedAt: string;
+}
+
+export interface PaySlip {
+  _id: string;
+  payrollId: string;
+  employeeId: string;
+  month: number;
+  year: number;
+  generatedAt: string;
+  documentUrl: string;
+}
+
+export interface Announcement {
+  _id: string;
+  title: string;
+  content: string;
+  createdBy: string;
+  createdAt: string;
+  expiresAt?: string;
+  isActive: boolean;
+}
